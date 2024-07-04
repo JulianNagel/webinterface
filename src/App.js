@@ -9,9 +9,9 @@ function App() {
   useEffect(() => {
     const fetchBands = async () => {
       try {
-        const response = await fetch(`./mock.json?query=${searchTerm}`, {
+        const response = await fetch(`https://api.srgssr.ch/mx3/v2/bands?query=${searchTerm}`, {
           headers: {
-            "Content-Type": "application/json",
+            "Accept": "application/json",
             Authorization: "Bearer WivSa3LfxEIzYCpZB8j08kwfBuDe",
           },
         });
