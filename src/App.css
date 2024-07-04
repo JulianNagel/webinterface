@@ -9,6 +9,10 @@ body {
     color: #333;
 }
 
+.App-link {
+    color: #0000;
+}
+
 .App {
     text-align: center;
 }
@@ -17,10 +21,6 @@ body {
     height: 40vmin;
     pointer-events: none;
     animation: App-logo-spin infinite 20s linear;
-}
-
-.App-link {
-    color: #0000;
 }
 
 @keyframes App-logo-spin {
@@ -41,14 +41,7 @@ body {
     padding: 20px;
 }
 
-.search-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.search-bar {
+.searh-bar {
     width: 50%;
     padding: 10px;
     font-size: 16px;
@@ -57,6 +50,17 @@ body {
     outline: none;
     transition: border-color 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.results li:hover {
+    transform: translateY(-5px);
 }
 
 .search-bar:focus {
@@ -77,8 +81,9 @@ body {
     transition: transform 0.2s;
 }
 
-.results li:hover {
-    transform: translateY(-5px);
+.results p {
+    margin: 0;
+    font-weight: 400;
 }
 
 .results h2 {
@@ -87,7 +92,7 @@ body {
     color: #007bff;
 }
 
-.results p {
-    margin: 0;
-    font-weight: 400;
+.separator {
+    margin: 0 10px;
+    color: #007bff;
 }

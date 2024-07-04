@@ -1,28 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
 import { useEffect, useState } from 'react';
+import './App.css';
+import logo from './logo.svg';
 
-function App() {
+const fetchBands = async (query, setBands) => {
+  try {
+    const response = await fetch(`https://api.srgssr.ch/mx3/v2/bands?query=${query}`, {
+      headers: {
+        "Accept": "application/json",
+        Authorization: "Bearer WivSa3LfxEIzYCpZB8j08kwfBuDe",
+      },
+    });
+    const data = await response.json();
+    setBands(data.response.bands);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+const App = () => {
   const [bands, setBands] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    const fetchBands = async () => {
-      try {
-        const response = await fetch(`https://api.srgssr.ch/mx3/v2/bands?query=${searchTerm}`, {
-          headers: {
-            "Accept": "application/json",
-            Authorization: "Bearer WivSa3LfxEIzYCpZB8j08kwfBuDe",
-          },
-        });
-        const data = await response.json();
-        setBands(data.response.bands);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchBands();
+    fetchBands(searchTerm, setBands);
   }, [searchTerm]);
 
   const filteredBands = bands.filter((band) =>
@@ -37,18 +37,25 @@ function App() {
               placeholder="Suche..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-bar"
+              className="searh-bar"
           />
         </div>
         {searchTerm ? (
             filteredBands.length > 0 ? (
                 <ul>
+
                   {filteredBands.map((band, index) => (
-                      <li key={index}>
-                        <h2>{band.name}</h2>
-                        <p>{band.permalink}</p>
+                      <li key={index} className="results-item">
+                        <h2>
+                          {band.name}{" "}
+                          <span className="separator">|</span>{" "}
+                          <a href={band.permalink} target="_blank" rel="noopener noreferrer">
+                            {band.permalink}
+                          </a>
+                        </h2>
                       </li>
                   ))}
+
                 </ul>
             ) : (
                 <p>Kein Ergebniss</p>
