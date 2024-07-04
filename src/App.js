@@ -3,21 +3,29 @@ import './App.css';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [bands, setBands] = useState(undefined);
+  const [bands, setBands] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("./mock.json?query=" + searchTerm, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer WivSa3LfxEIzYCpZB8j08kwfBuDe",
-      },
-    })
-        .then((r) => r.json())
-        .then((data) => setBands(data.response.bands));
+    const fetchBands = async () => {
+      try {
+        const response = await fetch(`./mock.json?query=${searchTerm}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer WivSa3LfxEIzYCpZB8j08kwfBuDe",
+          },
+        });
+        const data = await response.json();
+        setBands(data.response.bands);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchBands();
   }, [searchTerm]);
 
-  const filteredBands = bands?.filter((band) =>
+  const filteredBands = bands.filter((band) =>
       band.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -32,25 +40,21 @@ function App() {
               className="search-bar"
           />
         </div>
-        {bands ? (
-            searchTerm ? (
-                filteredBands.length > 0 ? (
-                    <ul>
-                      {filteredBands.map((band, index) => (
-                          <li key={index}>
-                            <h2>{band.name}</h2>
-                            <p>{band.permalink}</p>
-                          </li>
-                      ))}
-                    </ul>
-                ) : (
-                    <p>Kein Ergebniss</p>
-                )
+        {searchTerm ? (
+            filteredBands.length > 0 ? (
+                <ul>
+                  {filteredBands.map((band, index) => (
+                      <li key={index}>
+                        <h2>{band.name}</h2>
+                        <p>{band.permalink}</p>
+                      </li>
+                  ))}
+                </ul>
             ) : (
-                <p>geben sie einen Suchbegriff ein</p>
+                <p>Kein Ergebniss</p>
             )
         ) : (
-            <p>Nach schweitzer bands suchen</p>
+            <p>Geben Sie einen Suchbegriff ein</p>
         )}
       </div>
   );
